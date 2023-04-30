@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Epic Games Store Free Games</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+
+    <script>
+        window.onload = function () {
+            const free_games_tab = document.getElementById('free_games_tab');
+            const upcoming_free_games_tab = document.getElementById('upcoming_free_games_tab');
+            const games_in_promotion_tab = document.getElementById('games_in_promotion_tab');
+            let activeTab = null;
+
+            // 获取游戏数据并渲染到对应选项卡中
+            getGameInfo('./game_info.json')
+                .then(game_data => {
+                    renderGames(game_data.free_games, free_games_tab, 'Free Games', handleTabClick.bind(null, free_games_tab));
+                    renderGames(game_data.to_be_free, upcoming_free_games_tab, 'Upcoming', handleTabClick.bind(null, upcoming_free_games_tab));
+                    renderGames(game_data.promotions_games, games_in_promotion_tab, 'Promotion', handleTabClick.bind(null, games_in_promotion_tab));
+                    handleTabClick(free_games_tab);
+                })
+                .catch(error => {
+                    console.log('Error getting JSON:', error);
+                });
+
+            function getGameInfo(url) {
+                return fetch(url).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Unable to get game data.');
+                    }
+                    return response.json();
+                });
+            }
+
+            function renderGames(games, container, tabName, onClick) {
+                if (games.length === 0) {
+                    return;
+                }
+                const fragment = document.createDocumentFragment();
+                games.forEach(game => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <strong>Name:</strong> ${game.name}<br>
+                        <strong>Price:</strong> ${game.price}<br>
+                        <strong>Status:</strong> ${game.status}<br>
+                        <strong>Start Date:</strong> ${game.start_date}<br>
+                        <strong>End Date:</strong> ${game.end_date}<br>
+                        <strong>Link:</strong> <a href="${game.link}" target="_blank" rel="noopener noreferrer">Click me to Open Store Page</a>
+                    `;
+                    fragment.appendChild(li);
+                });
+                const li_tab = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = 'javascript:void(0)';
+                a.textContent = tabName;
+                a.addEventListener('click', onClick);
+                li_tab.appendChild(a);
+                container.appendChild(fragment);
+                document.querySelector('.tab').appendChild(li_tab);
+            }
+
+            function handleTabClick(tab) {
+                const tabs = [free_games_tab, upcoming_free_games_tab, games_in_promotion_tab];
+                tabs.forEach(elem => {
+                    const isActive = (elem === tab);
+                    elem.style.display = isActive ? 'block' : 'none';
+                });
+            }
+        };
+    </script>
+</head>
+
+<body>
+    <h1>Epic Games Store Free Games</h1>
+
+    <ul id="free_games_tab" class="tabcontent"></ul>
+    <ul id="upcoming_free_games_tab" class="tabcontent"></ul>
+    <ul id="games_in_promotion_tab" class="tabcontent"></ul>
+
+    <div class="tab_div">
+        <ul class="tab"></ul>
+    </div>
+</body>
+
+</html>

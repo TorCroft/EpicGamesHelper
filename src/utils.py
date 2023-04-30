@@ -15,9 +15,9 @@ def get_notifier_list() -> list[str]:
         if 'USER_NOTIFIER' in var.upper():
             notifier_key_list.append(environ.get(var))
     return notifier_key_list
+
 def str_to_dict(str: str) -> dict:
     return literal_eval(str.lower().replace('null', 'None') if 'null' in str.lower() else str)
-
 
 def notify_user(title, content):
     notify_list = get_notifier_list()
@@ -30,3 +30,18 @@ def notify_user(title, content):
         result = str_to_dict(notify(notifier, key=key, title=title, content=content, group='EpicGamesHelper').text)
         if (result.get('code') == 200):
             print(f'Message delivered to user ...')
+
+def parse_game_list(game_list:list[dict]):
+    msg_list = []
+    for game in game_list:
+        match game['status']:
+            case 'FREE':
+                msg = f"* {game['name']} ({game['price']}) is FREE now, until {game['end_date']} UTC "
+            case 'Not free yet':
+                msg = f"* {game['name']} ({game['price']}) will be free from {game['start_date']} to {game['end_date']} UTC"
+            case 'in Promotion':
+                msg = f"* {game['name']} is in promotion ({game['price']} -> {game['price_promo']}) from {game['start_date']} to {game['end_date']} UTC"
+            case _:
+                pass
+        msg_list.append(msg)
+    return msg_list

@@ -1,7 +1,8 @@
 from epicstore_api import EpicGamesStoreAPI
 from datetime import datetime
 
-def fetch_weekly_free_games() -> list[str]:
+
+def fetch_weekly_free_games():
     """Fetches current free games from the store."""
 
     free_games_list = []
@@ -30,12 +31,11 @@ def fetch_weekly_free_games() -> list[str]:
         # Like in Discord's embeds for example, or anything else.
         # Here I showed it just as example and won't use it.
 
-        '''
         game_thumbnail = None
         for image in game['keyImages']:
             if image['type'] == 'Thumbnail':
                 game_thumbnail = image['url']
-        '''
+                break
         
         game_price = game['price']['totalPrice']['fmtPrice']['originalPrice']
         game_price_promo = game['price']['totalPrice']['fmtPrice']['discountPrice']
@@ -48,31 +48,58 @@ def fetch_weekly_free_games() -> list[str]:
             promotion_data = game_promotions[0]['promotionalOffers'][0]
             start_date_iso, end_date_iso = promotion_data['startDate'][:-1], promotion_data['endDate'][:-1]
             
-            # Remove the last "Z" character so Python's datetime can parse it.
             start_date = datetime.fromisoformat(start_date_iso)
             end_date = datetime.fromisoformat(end_date_iso)
+            free_games_list.append(
+                {
+                    "name": game_title,
+                    "price": game_price,
+                    "status": "FREE",
+                    "start_date": f'{start_date} UTC',
+                    "end_date": f'{end_date} UTC',
+                    'game_thumbnail': game_thumbnail,
+                    "link": game_url
+                }
+            )
             msg = f'* {game_title} ({game_price}) is FREE now, until {end_date} UTC --> {game_url}'
-            free_games_list.append(msg)
         elif not game_promotions and upcoming_promotions:
             # Promotion is not active yet, but will be active soon.
             promotion_data = upcoming_promotions[0]['promotionalOffers'][0]
             start_date_iso, end_date_iso = promotion_data['startDate'][:-1], promotion_data['endDate'][:-1]
             
-            # Remove the last "Z" character so Python's datetime can parse it.
             start_date = datetime.fromisoformat(start_date_iso)
             end_date = datetime.fromisoformat(end_date_iso)
-            msg = f'* {game_title} ({game_price}) will be free from {start_date} to {end_date} UTC --> {game_url}'
-            upcoming_fres_games_list.append(msg)
+            upcoming_fres_games_list.append(
+                {
+                    "name": game_title,
+                    "price": game_price,
+                    "status": "Not free yet",
+                    "start_date": f'{start_date} UTC',
+                    "end_date": f'{end_date} UTC',
+                    'game_thumbnail': game_thumbnail,
+                    "link": game_url
+                }
+            )
         elif game_promotions:
             # Promotion is active.
             promotion_data = game_promotions[0]['promotionalOffers'][0]
             start_date_iso, end_date_iso = promotion_data['startDate'][:-1], promotion_data['endDate'][:-1]
             
-            # Remove the last "Z" character so Python's datetime can parse it.
             start_date = datetime.fromisoformat(start_date_iso)
             end_date = datetime.fromisoformat(end_date_iso)
-            games_in_promotion_list.append(f'* {game_title} is in promotion ({game_price} -> {game_price_promo}) from {start_date} to {end_date} UTC --> {game_url}')
-        else:
-            always_free_games_list.append(f'* {game_title} is always free --> {game_url}')
+            games_in_promotion_list.append(
+                {
+                    "name": game_title,
+                    "price": game_price,
+                    "price_promo": game_price_promo,
+                    "status": "in Promotion",
+                    "start_date": f'{start_date} UTC',
+                    "end_date": f'{end_date} UTC',
+                    'game_thumbnail': game_thumbnail,
+                    "link": game_url
+                }
+            )
+            #(f'* {game_title} is in promotion ({game_price} -> {game_price_promo}) from {start_date} to {end_date} UTC --> {game_url}')
+
     
-    return free_games_list + upcoming_fres_games_list + games_in_promotion_list + always_free_games_list
+    return free_games_list, upcoming_fres_games_list, games_in_promotion_list

@@ -1,0 +1,131 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    width: 80%;
+    max-width: 600px;
+}
+
+li {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+
+.tab_div {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+.tab {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+}
+
+.tab li {
+    float: left;
+    width: 100px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab li:before,
+.tab li:after,
+
+.tab li a {
+    -webkit-transition: all 0.25s ease-in-out;
+    transition: all 0.25s ease-in-out;
+}
+
+.tab li:before,
+.tab li:after {
+    content: "";
+    display: block;
+}
+
+.tab li:not(:first-child):after {
+    background: #ddd;
+    height: 20px;
+    width: 1px;
+    left: 0;
+    top: 10px;
+    position: absolute;
+}
+
+.tab li a {
+    display: block;
+    position: relative;
+    z-index: 2;
+    color: #000;
+    font-size: 14px;
+}
+
+.tab li:before {
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    position: absolute;
+}
+
+.tab li:hover a {
+    color: #fff;
+}
+
+.tab li:hover:before {
+    box-shadow: 0 0 0 100px #36bc99;
+}
+
+.tab li:hover+li:after,
+.tab li:hover:after {
+    height: 0;
+    top: 20px;
+}
