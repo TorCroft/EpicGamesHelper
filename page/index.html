@@ -58,12 +58,12 @@
                     }
                     li.innerHTML = `
                         <div style="float: ${isMobile ? 'none' : 'left'}" class="gameinfo">
-                            <strong>Name:</strong> ${game.name}<br>
+                            <strong>Name:</strong> <a href="${game.link}" target="_blank" rel="noopener noreferrer">${game.name}</a><br>
                             <strong>Price:</strong> ${game.price}<br>
                             <strong>Status:</strong> <span class="${statusClass}">${game.status}</span><br>
                             <strong>Start Date:</strong> ${game.start_date}<br>
                             <strong>End Date:</strong> ${game.end_date}<br>
-                            <strong>Link:</strong> <a href="${game.link}" target="_blank" rel="noopener noreferrer">Open Store Page</a>
+                            <a style="margin-left: 65px;" href="${game.link}" target="_blank" rel="noopener noreferrer">Go to Store Page</a>
                         </div>
                     `;
                     if (!isMobile) {
@@ -72,7 +72,7 @@
                         div.style.overflow = 'hidden';
                         const img = new Image();
                         img.src = "./images/" + game.name + ".png";
-                        img.style.maxHeight = "150px";
+                        img.style.maxHeight = "140px";
                         img.style.float = "right";
                         // 图片加载完成后执行回调函数
                         img.onload = function () {
