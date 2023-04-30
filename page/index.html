@@ -6,27 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Epic Games Store Free Games</title>
+    <link rel="shortcut icon" href="./cxk_icon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="./style.css">
 
     <script>
-
         function isMobileDevice() {
             var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
             return width < 768; // 判断当前设备宽度是否小于768px
         }
-        const isMobileDevice_var = isMobileDevice();
-
+        
         window.onload = function () {
+            const isMobile = isMobileDevice();
             const free_games_tab = document.getElementById('free_games_tab');
             const upcoming_free_games_tab = document.getElementById('upcoming_free_games_tab');
             const games_in_promotion_tab = document.getElementById('games_in_promotion_tab');
-            let text_float = "";
-            if (isMobileDevice_var) {
-                text_float = 'none';
-            }
-            else {
-                text_float = 'left';
-            }
 
             getGameInfo('./game_info.json')
                 .then(game_data => {
@@ -64,7 +57,7 @@
                         statusClass = "promotion-color";
                     }
                     li.innerHTML = `
-                        <div style="float: ${text_float}" class="gameinfo">
+                        <div style="float: ${isMobile ? 'none' : 'left'}" class="gameinfo">
                             <strong>Name:</strong> ${game.name}<br>
                             <strong>Price:</strong> ${game.price}<br>
                             <strong>Status:</strong> <span class="${statusClass}">${game.status}</span><br>
@@ -73,7 +66,7 @@
                             <strong>Link:</strong> <a href="${game.link}" target="_blank" rel="noopener noreferrer">Open Store Page</a>
                         </div>
                     `;
-                    if (!isMobileDevice_var) {
+                    if (!isMobile) {
                         const div = document.createElement('div');
                         div.classList.add("gameimg");
                         div.style.overflow = 'hidden';
