@@ -27,7 +27,7 @@ def notify_user(title, content):
             print('No notification method configured ...')
             return
         print('Preparing to send notification ...')
-        result = str_to_dict(notify(notifier, key=key, title=title, content=content, group='EpicGamesHelper').text)
+        result = str_to_dict(notify(notifier, key=key, title=title, content=content, group='EpicGamesHelper', url = 'www.baidu.com').text)
         if (result.get('code') == 200):
             print(f'Message delivered to user ...')
 

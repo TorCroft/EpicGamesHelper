@@ -17,7 +17,7 @@ def run():
 
     message = '\n'.join(parse_game_list(free_games + to_be_free + promotions_games))
     print(message)
-    # notify_user(title="Epic Weekly Free Games", content=message)
+    notify_user(title="Epic Weekly Free Games", content=message)
 
 
 if __name__ == "__main__":
