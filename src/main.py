@@ -99,7 +99,4 @@ def fetch_weekly_free_games():
                     "link": game_url
                 }
             )
-            #(f'* {game_title} is in promotion ({game_price} -> {game_price_promo}) from {start_date} to {end_date} UTC --> {game_url}')
-
-    
     return free_games_list, upcoming_fres_games_list, games_in_promotion_list
