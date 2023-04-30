@@ -2,6 +2,42 @@ from onepush import notify
 import requests
 from ast import literal_eval
 import os
+from datetime import datetime
+import re
+
+def get_yaml_text() -> str:
+    with open(".github\workflows\FetchWeeklyFreeGames.yml", "r") as file:
+        return file.read()
+
+def save_new_text(new_content):
+    with open(".github\workflows\FetchWeeklyFreeGames.yml","w") as file:
+        return file.write(new_content)
+
+def get_cron(text) -> str:
+    match = re.search(r"cron: '(.+)'", text)
+    if match:
+        cron_expr = match.group(1)
+        return cron_expr
+    else:
+        raise "No Match Found"
+
+def datetime_to_cron(datetimevar: datetime):
+    minute = str(datetimevar.minute)
+    hour = str(datetimevar.hour)
+    day = str(datetimevar.day)
+    month = str(datetimevar.month)
+    weekday = datetimevar.strftime("%a")
+    return f"{minute} {hour} {day} {month} {weekday}"
+
+
+def parse_time_str(time_str: str) -> str:
+    '''Parse time based on '%Y-%m-%d %H:%M:%S %Z' format, return GitHub Cron str.'''
+    return datetime_to_cron(datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S %Z"))
+
+
+def process_yaml_text(original_text, new_cron_str):
+    print(f"Replace {get_cron(original_text)} with {new_cron_str}.")
+    return re.sub(r"cron: '(.+)'", f"cron: '{new_cron_str}'", original_text)
 
 # For local test
 if os.environ.get('USER_NOTIFIER_1') is None:
