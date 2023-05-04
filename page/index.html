@@ -72,10 +72,11 @@
                         div.style.overflow = 'hidden';
                         const img = new Image();
                         img.src = "./images/" + game.name + ".png";
-                        img.style.maxHeight = "140px";
-                        img.style.float = "right";
+                        
                         // 图片加载完成后执行回调函数
                         img.onload = function () {
+                            img.style.maxHeight = "140px";
+                            img.style.float = "right";
                             div.appendChild(img);
                             li.appendChild(div);
                         };
