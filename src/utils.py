@@ -6,11 +6,11 @@ from datetime import datetime
 import re
 
 def get_yaml_text() -> str:
-    with open(".github\workflows\FetchWeeklyFreeGames.yml", "r") as file:
+    with open(".github/workflows/FetchWeeklyFreeGames.yml", "r") as file:
         return file.read()
 
 def save_new_text(new_content):
-    with open(".github\workflows\FetchWeeklyFreeGames.yml","w") as file:
+    with open(".github/workflows/FetchWeeklyFreeGames.yml","w") as file:
         return file.write(new_content)
 
 def get_cron(text) -> str:
