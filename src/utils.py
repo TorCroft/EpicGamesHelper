@@ -5,6 +5,22 @@ import os
 from datetime import datetime
 import re
 
+def delete_files(path):
+    """
+    删除指定路径下的所有文件
+    """
+    # 遍历文件夹中的所有文件和子文件夹
+    for file in os.listdir(path):
+        # 拼接文件路径
+        full_path = os.path.join(path, file)
+        # 判断是否为文件，如果是则删除
+        if os.path.isfile(full_path):
+            os.remove(full_path)
+        # 如果是文件夹，则递归调用本函数
+        elif os.path.isdir(full_path):
+            delete_files(full_path)
+
+
 def get_yaml_text() -> str:
     with open(".github/workflows/FetchWeeklyFreeGames.yml", "r") as file:
         return file.read()

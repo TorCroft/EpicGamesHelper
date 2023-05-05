@@ -3,7 +3,7 @@ name: Fetch Weekly Free Games
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 15 4 5 Thu'
+    - cron: '0 15 11 5 Thu'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,11 +35,10 @@ jobs:
           git config --global user.name "${{ secrets.USERNAME }}"
           git add .
           git commit -m "Updated at ${{ steps.time.outputs.timestamp }} UTC"
-          git push
-              
+                        
       - name: GitHub Push
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
           branch: main
           force: true
