@@ -3,7 +3,7 @@ name: Fetch Weekly Free Games
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 15 11 5 Thu'
+    - cron: '0 15 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
