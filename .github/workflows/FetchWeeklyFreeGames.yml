@@ -32,15 +32,11 @@ jobs:
         run: |
           python3 ./index.py
           
-      - name: Check for uncommitted changes
+      - name: Push if there are any changes
         run: |
-          if [[ `git status --porcelain | grep '^[MADRC]'` ]]; then
-            git config --global user.email "${{ secrets.EMAIL }}"
-            git config --global user.name "${{ secrets.USERNAME }}"
-            git add .
-            git commit -m "Updated at ${{ steps.time.outputs.timestamp }} UTC"
-            git push
-          else
-            echo "No changes to push."
-          fi
+          git config --global user.email "${{ secrets.EMAIL }}"
+          git config --global user.name "${{ secrets.USERNAME }}"
+          git add .
+          git commit -m 'Updated at ${{ steps.time.outputs.timestamp }} UTC' && git push || echo "No changes to commit"
+
   
