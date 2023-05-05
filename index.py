@@ -18,7 +18,7 @@ def run():
     print(message)
     new_yml_str = process_yaml_text(get_yaml_text(),parse_time_str(to_be_free[0]['start_date']))
     save_new_text(new_yml_str)
-    notify_user(title="Epic Weekly Free Games", content=message)
+    #notify_user(title="Epic Weekly Free Games", content=message)
 
 
 if __name__ == "__main__":
