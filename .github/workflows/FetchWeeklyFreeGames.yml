@@ -31,14 +31,16 @@ jobs:
           USER_NOTIFIER_1: ${{ secrets.USER_NOTIFIER_1 }}
         run: |
           python3 ./index.py
-          git config --global user.email "${{ secrets.EMAIL }}"
-          git config --global user.name "${{ secrets.USERNAME }}"
-          git add .
-          git commit -m "Updated at ${{ steps.time.outputs.timestamp }} UTC"
-                        
-      - name: GitHub Push
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.WORKFLOW_TOKEN }}
-          branch: main
-          force: true
+          
+      - name: Check for uncommitted changes
+        run: |
+          if [[ `git status --porcelain | grep '^[MADRC]'` ]]; then
+            git config --global user.email "${{ secrets.EMAIL }}"
+            git config --global user.name "${{ secrets.USERNAME }}"
+            git add .
+            git commit -m "Updated at ${{ steps.time.outputs.timestamp }} UTC"
+            git push
+          else
+            echo "No changes to push."
+          fi
+  

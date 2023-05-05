@@ -17,8 +17,8 @@ def run():
     delete_files("./page/images")
     message = '\n'.join(parse_game_list(free_games + to_be_free + promotions_games))
     print(message)
-    new_yml_str = process_yaml_text(get_yaml_text(),parse_time_str(to_be_free[0]['start_date']))
-    save_new_text(new_yml_str)
+    #new_yml_str = process_yaml_text(get_yaml_text(),parse_time_str(to_be_free[0]['start_date']))
+    #save_new_text(new_yml_str)
     #notify_user(title="Epic Weekly Free Games", content=message)
 
 
