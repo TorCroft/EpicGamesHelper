@@ -34,13 +34,11 @@ jobs:
           git config --global user.email "${{ secrets.EMAIL }}"
           git config --global user.name "${{ secrets.USERNAME }}"
           git add .
-          git commit -m "Fetch Weekly Free Games - UTC ${{ steps.time.outputs.timestamp }}"
+          git commit -m "Updated at ${{ steps.time.outputs.timestamp }} UTC"
               
       - name: GitHub Push
-        uses: ad-m/github-push-action@v0.6.0
+        uses: ad-m/github-push-action@master
         with:
-          # Token for the repo. Can be passed in using $\{{ secrets.GITHUB_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main
-          # Determines if force push is used
           force: true
