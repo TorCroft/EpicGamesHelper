@@ -36,6 +36,7 @@ jobs:
         run: |
           git config --global user.email "${{ secrets.EMAIL }}"
           git config --global user.name "${{ secrets.USERNAME }}"
+          git status
           git add .
           git commit -m 'Updated at ${{ steps.time.outputs.timestamp }} UTC' && git push || echo "No changes to commit"
 
