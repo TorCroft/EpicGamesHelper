@@ -1,4 +1,4 @@
-name: Helper # 修改你的名称
+name: Helper
 
 on:
   workflow_dispatch:
@@ -23,8 +23,7 @@ jobs:
     - name: 初始化配置文件
       run: |
         cd epic/src
-        echo "PUSHER_TELEGRAM: ${{ secrets.PUSHER_TELEGRAM }}" >> config.yaml
-        echo "EPIC_EMAIL: ${{ secrets.EPIC_EMAIL }}" >> config.yaml
+        echo "EPIC_EMAIL: ${{ secrets.EMAIL }}" >> config.yaml
         echo "EPIC_PASSWORD: ${{ secrets.EPIC_PASSWORD }}" >> config.yaml
         echo "PLAYER: ${{ secrets.PLAYER }}" >>config.yaml
     - uses: actions/setup-python@v4
