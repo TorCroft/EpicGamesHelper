@@ -25,8 +25,11 @@ def fetch_weekly_free_games():
     for game in free_games:
         game_title = game['title']
         game_publisher = game['seller']['name']
-        game_url = f"https://store.epicgames.com/en-US/p/{game['catalogNs']['mappings'][0]['pageSlug']}"
 
+        try:
+            game_url = f"https://store.epicgames.com/en-US/p/{game['catalogNs']['mappings'][0]['pageSlug']}"
+        except IndexError:
+            game_url = ""
         # Can be useful when you need to also show the thumbnail of the game.
         # Like in Discord's embeds for example, or anything else.
         # Here I showed it just as example and won't use it.

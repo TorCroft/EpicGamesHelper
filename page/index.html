@@ -10,13 +10,7 @@
     <link rel="stylesheet" type="text/css" href="./style.css">
 
     <script>
-        function isMobileDevice() {
-            var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-            return width < 768; // 判断当前设备宽度是否小于768px
-        }
-        
         window.onload = function () {
-            const isMobile = isMobileDevice();
             const free_games_tab = document.getElementById('free_games_tab');
             const upcoming_free_games_tab = document.getElementById('upcoming_free_games_tab');
             const games_in_promotion_tab = document.getElementById('games_in_promotion_tab');
@@ -56,31 +50,18 @@
                     } else if (game.status === "in Promotion") {
                         statusClass = "promotion-color";
                     }
+                    const link = game.link ? `<a style="margin-left: 65px;" href="${game.link}" target="_blank" rel="noopener noreferrer">Go to Store Page</a>` : '';
+                    const name_url_str = game.link ? 'href="${game.link}"' : "";
                     li.innerHTML = `
-                        <div style="float: ${isMobile ? 'none' : 'left'}" class="gameinfo">
-                            <strong>Name:</strong> <a href="${game.link}" target="_blank" rel="noopener noreferrer">${game.name}</a><br>
+                        <div class="gameinfo">
+                            <strong>Name:</strong> <a ${name_url_str} target="_blank" rel="noopener noreferrer">${game.name}</a><br>
                             <strong>Price:</strong> ${game.price}<br>
                             <strong>Status:</strong> <span class="${statusClass}">${game.status}</span><br>
                             <strong>Start Date:</strong> ${game.start_date}<br>
                             <strong>End Date:</strong> ${game.end_date}<br>
-                            <a style="margin-left: 65px;" href="${game.link}" target="_blank" rel="noopener noreferrer">Go to Store Page</a>
+                            ${link}
                         </div>
                     `;
-                    if (!isMobile) {
-                        const div = document.createElement('div');
-                        div.classList.add("gameimg");
-                        div.style.overflow = 'hidden';
-                        const img = new Image();
-                        img.src = "./images/" + game.name + ".png";
-                        
-                        // 图片加载完成后执行回调函数
-                        img.onload = function () {
-                            img.style.maxHeight = "140px";
-                            img.style.float = "right";
-                            div.appendChild(img);
-                            li.appendChild(div);
-                        };
-                    }
                     fragment.appendChild(li);
                 });
                 const li_tab = document.createElement('li');
@@ -100,6 +81,32 @@
                 });
             }
         };
+
+        function showLocalImageInWindow(filePath) {
+            const imgElement = document.createElement('img');
+            imgElement.src = new URL(filePath, window.location.href).href;
+            imgElement.style.maxHeight = '500px';
+            imgElement.style.maxWidth = '200px';
+            const windowDiv = document.createElement('div');
+            windowDiv.style.position = 'fixed';
+            windowDiv.style.top = '50%';
+            windowDiv.style.left = '50%';
+            windowDiv.style.transform = 'translate(-50%, -50%)';
+            windowDiv.style.padding = '20px';
+            windowDiv.style.backgroundColor = '#fff';
+            windowDiv.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
+            windowDiv.style.borderRadius = '6px';
+
+            windowDiv.appendChild(imgElement);
+            document.body.appendChild(windowDiv);
+            // 添加 click 事件监听器
+            imgElement.addEventListener('click', function () {
+                // 删除 div 容器
+                document.body.removeChild(windowDiv);
+            });
+        }
+
+
     </script>
 </head>
 

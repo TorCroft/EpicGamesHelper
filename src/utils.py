@@ -66,7 +66,12 @@ if os.environ.get('USER_NOTIFIER_1') is None:
 
 
 def download_img(img_name,image_url):
-    response = requests.get(image_url)
+    if image_url is None:
+        return False
+    try:
+        response = requests.get(image_url)
+    except requests.exceptions.RequestException as e:
+        print(f"Download Failed because {e}")
     with open(f'./page/images/{img_name}.png', 'wb') as f:
         f.write(response.content)
     print(f'Download {img_name}.png completed ...')
@@ -101,11 +106,11 @@ def parse_game_list(game_list:list[dict]):
         download_img(game['name'], game['game_thumbnail'])
         match game['status']:
             case 'FREE':
-                msg = f"* {game['name']} ({game['price']}) is FREE now, until {game['end_date']} UTC "
+                msg = f"* {game['name']} ({game['price']}) is FREE now, until {game['end_date']}"
             case 'Not free yet':
                 msg = f"* {game['name']} ({game['price']}) will be free from {game['start_date']} to {game['end_date']} UTC"
             case 'in Promotion':
-                msg = f"* {game['name']} is in promotion ({game['price']} -> {game['price_promo']}) from {game['start_date']} to {game['end_date']} UTC"
+                msg = f"* {game['name']} is in promotion ({game['price']} -> {game['price_promo']}) from {game['start_date']} to {game['end_date']}"
             case _:
                 pass
         
