@@ -6,7 +6,6 @@ import numpy as np
 import cv2
 import os
 import requests
-import re
 
 def cv_imread(file_path=""):
     img_mat = cv2.imdecode(np.fromfile(file_path, dtype=np.uint8), -1)
@@ -43,7 +42,7 @@ def delete_files(path):
         # 判断是否为文件，如果是则删除
         if os.path.isfile(full_path):
             os.remove(full_path)
-            print(f"删除{full_path} ...")
+            logger.info(f"删除{full_path} ...")
         # 如果是文件夹，则递归调用本函数
         elif os.path.isdir(full_path):
             delete_files(full_path)
@@ -51,7 +50,7 @@ def delete_files(path):
 
 # For local test
 if os.environ.get('USER_NOTIFIER_1') is None:
-    print('Load .env file from local.')
+    logger.info('Load .env file from local.')
     from dotenv import load_dotenv
     load_dotenv()
 
@@ -62,10 +61,11 @@ def download_img(img_name,image_url):
     try:
         response = requests.get(image_url)
     except requests.exceptions.RequestException as e:
-        print(f"Download Failed because {e}")
+        logger.error(f"Download Failed because {e}")
+        return False
     with open(f'./page/images/{img_name}.png', 'wb') as f:
         f.write(response.content)
-    print(f'Download {img_name}.png completed ...')
+    logger.info(f'Download {img_name}.png completed ...')
     return True
 
 def get_notifier_list() -> list[str]:
@@ -84,12 +84,12 @@ def notify_user(title, content):
     for i in notify_list:
         notifier, key = i.split('#')
         if not notifier or not key:
-            print('No notification method configured ...')
+            logger.info('No notification method configured ...')
             return
-        print('Preparing to send notification ...')
+        logger.info('Preparing to send notification ...')
         result = str_to_dict(notify(notifier, key=key, title=title, content=content, group='EpicGamesHelper', url = 'https://torcroft.github.io/EpicGamesHelper/').text)
         if (result.get('code') == 200):
-            print(f'Message delivered to user ...')
+            logger.info(f'Message delivered to user ...')
 
 def parse_game_list(game_list:list[dict]):
     msg_list = []

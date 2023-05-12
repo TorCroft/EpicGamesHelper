@@ -1,5 +1,5 @@
 from src.main import fetch_weekly_free_games
-from src.utils import notify_user, parse_game_list, delete_files, resize_image, is_notify_time
+from src.utils import notify_user, parse_game_list, delete_files, resize_image, is_notify_time, logger
 import json
 
 def run():
@@ -25,7 +25,7 @@ def run():
     if is_notify_time(free_games[0]['start_date']):
         notify_user(title="Epic Weekly Free Games", content=message)
     else:
-        print("It is not yet time, push notification has been cancelled ...")
+        logger.info("It is not yet time, push notification has been cancelled ...")
 
 if __name__ == "__main__":
     run()
