@@ -77,8 +77,8 @@ def fetch_weekly_free_games():
                     "name": game_title,
                     "price": game_price,
                     "status": "Not free yet",
-                    "start_date": f'{start_date}',
-                    "end_date": f'{end_date}',
+                    "start_date": f'{start_date} UTC',
+                    "end_date": f'{end_date} UTC',
                     'game_thumbnail': game_thumbnail,
                     "link": game_url
                 }
@@ -96,8 +96,8 @@ def fetch_weekly_free_games():
                     "price": game_price,
                     "price_promo": game_price_promo,
                     "status": "in Promotion",
-                    "start_date": f'{start_date}',
-                    "end_date": f'{end_date}',
+                    "start_date": f'{start_date} UTC',
+                    "end_date": f'{end_date} UTC',
                     'game_thumbnail': game_thumbnail,
                     "link": game_url
                 }

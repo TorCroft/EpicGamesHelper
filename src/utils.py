@@ -49,22 +49,6 @@ def delete_files(path):
             delete_files(full_path)
 
 
-def get_yaml_text() -> str:
-    with open(".github/workflows/FetchWeeklyFreeGames.yml", "r") as file:
-        return file.read()
-
-def save_new_text(new_content):
-    with open(".github/workflows/FetchWeeklyFreeGames.yml","w") as file:
-        return file.write(new_content)
-
-def get_cron(text) -> str:
-    match = re.search(r"cron: '(.+)'", text)
-    if match:
-        cron_expr = match.group(1)
-        return cron_expr
-    else:
-        raise "No Match Found"
-
 # For local test
 if os.environ.get('USER_NOTIFIER_1') is None:
     print('Load .env file from local.')
@@ -115,11 +99,10 @@ def parse_game_list(game_list:list[dict]):
             case 'FREE':
                 msg = f"* {game['name']} ({game['price']}) is FREE now, until {game['end_date']}"
             case 'Not free yet':
-                msg = f"* {game['name']} ({game['price']}) will be free from {game['start_date']} to {game['end_date']} UTC"
+                msg = f"* {game['name']} ({game['price']}) will be free from {game['start_date']} to {game['end_date']}"
             case 'in Promotion':
                 msg = f"* {game['name']} is in promotion ({game['price']} -> {game['price_promo']}) from {game['start_date']} to {game['end_date']}"
             case _:
                 pass
-        
         msg_list.append(msg)
     return msg_list
