@@ -50,19 +50,28 @@
                     } else if (game.status === "in Promotion") {
                         statusClass = "promotion-color";
                     }
-                    const link = game.link ? `<a style="margin-left: 65px;" href="${game.link}" target="_blank" rel="noopener noreferrer">Go to Store Page</a>` : '';
-                    const name_url_str = game.link ? 'href="${game.link}"' : "";
+                    const link = game.link ? `<br><a href="${game.link}" target="_blank" rel="noopener noreferrer">Go to Store Page</a><br>` : '';
+                    const nameUrlStr = game.link ? `href="${game.link}"` : '';
+                    let button;
+                    if (game.link) {
+                        button = document.createElement('button');
+                        button.textContent = 'Show Image';
+                        button.onclick = () => showLocalImageInWindow(`./images/${game.name}.png`);
+                    }
+
                     li.innerHTML = `
-                        <div class="gameinfo">
-                            <strong>Name:</strong> <a ${name_url_str} target="_blank" rel="noopener noreferrer">${game.name}</a><br>
-                            <strong>Price:</strong> ${game.price}<br>
-                            <strong>Status:</strong> <span class="${statusClass}">${game.status}</span><br>
-                            <strong>Start Date:</strong> ${game.start_date}<br>
-                            <strong>End Date:</strong> ${game.end_date}<br>
-                            ${link}
-                        </div>
+                        <strong>Name:</strong> <a ${nameUrlStr} target="_blank" rel="noopener noreferrer">${game.name}</a><br>
+                        <strong>Price:</strong> ${game.price}<br>
+                        <strong>Status:</strong> <span class="${statusClass}">${game.status}</span><br>
+                        <strong>Start Date:</strong> ${game.start_date}<br>
+                        <strong>End Date:</strong> ${game.end_date}
+                        ${link}
                     `;
+                    if (game.link) {
+                        li.appendChild(button);
+                    }
                     fragment.appendChild(li);
+
                 });
                 const li_tab = document.createElement('li');
                 const a = document.createElement('a');
@@ -83,11 +92,17 @@
         };
 
         function showLocalImageInWindow(filePath) {
+            let windowDiv = document.getElementById('image-window');
+            if (windowDiv) {
+                // 如果窗口已经存在，则删除旧的窗口
+                document.body.removeChild(windowDiv);
+            }
             const imgElement = document.createElement('img');
             imgElement.src = new URL(filePath, window.location.href).href;
-            imgElement.style.maxHeight = '500px';
-            imgElement.style.maxWidth = '375px';
-            const windowDiv = document.createElement('div');
+            imgElement.style.maxHeight = '400px';
+            imgElement.style.maxWidth = '300px';
+            windowDiv = document.createElement('div');
+            windowDiv.id = 'image-window';
             windowDiv.style.position = 'fixed';
             windowDiv.style.top = '50%';
             windowDiv.style.left = '50%';

@@ -143,3 +143,29 @@ a:hover {
 .promotion-color {
     color: rgb(53, 132, 168);
 }
+
+button {
+    /* 设置背景色和文字颜色 */
+    background-color: #09b0b3;
+    color: white;
+  
+    /* 设置边框样式 */
+    border: none;
+    border-radius: 5px;
+  
+    /* 设置 padding 和 margin */
+    padding: 10px 20px;
+    margin: 10px;
+  
+    /* 鼠标悬停时的样式 */
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #07dfbe;
+  }
+  
+  /* 按钮按下时的样式 */
+  button:active {
+    background-color: #0c74b6;
+  }
+  
