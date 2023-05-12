@@ -1,9 +1,34 @@
+from datetime import datetime, timezone,timedelta
 from onepush import notify
-import requests
+from loguru import logger
 from ast import literal_eval
+import numpy as np
+import cv2
 import os
-from datetime import datetime
+import requests
 import re
+
+def cv_imread(file_path=""):
+    img_mat = cv2.imdecode(np.fromfile(file_path, dtype=np.uint8), -1)
+    return img_mat
+
+def cv_imwrite(file_path, frame):
+    cv2.imencode('.png', frame)[1].tofile(file_path)
+
+def resize_image(image_folder_path):
+    for i in os.listdir(image_folder_path):
+        image_path = os.path.join(image_folder_path, i)
+        img = cv_imread(image_path)
+        resized_img = cv2.resize(img, (375, 500))
+        if cv2.imwrite(f"{image_path}", resized_img) is False:
+            logger.info(f"Use numpy read image [{i}]")
+            cv_imwrite(image_path, resized_img)
+        logger.info(f"Resized {i} to 375*500")
+
+def is_notify_time(datetime_str:str):
+    date_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S %Z').replace(tzinfo=timezone.utc)
+    today = datetime.now(timezone.utc)
+    return date_obj <= today and today < date_obj + timedelta(hours=2)
 
 def delete_files(path):
     """
@@ -39,24 +64,6 @@ def get_cron(text) -> str:
         return cron_expr
     else:
         raise "No Match Found"
-
-def datetime_to_cron(datetimevar: datetime):
-    minute = str(datetimevar.minute)
-    hour = str(datetimevar.hour)
-    day = str(datetimevar.day)
-    month = str(datetimevar.month)
-    weekday = datetimevar.strftime("%a")
-    return f"{minute} {hour} {day} {month} {weekday}"
-
-
-def parse_time_str(time_str: str) -> str:
-    '''Parse time based on '%Y-%m-%d %H:%M:%S %Z' format, return GitHub Cron str.'''
-    return datetime_to_cron(datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S %Z"))
-
-
-def process_yaml_text(original_text, new_cron_str):
-    print(f"Replace {get_cron(original_text)} with {new_cron_str}.")
-    return re.sub(r"cron: '(.+)'", f"cron: '{new_cron_str}'", original_text)
 
 # For local test
 if os.environ.get('USER_NOTIFIER_1') is None:
