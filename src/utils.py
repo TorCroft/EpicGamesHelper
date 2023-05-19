@@ -7,7 +7,13 @@ import cv2
 import os
 import requests
 
-def cv_imread(file_path=""):
+# For local test
+if os.environ.get('USER_NOTIFIER_1') is None:
+    logger.info('Load .env file from local.')
+    from dotenv import load_dotenv
+    load_dotenv()
+
+def cv_imread(file_path="") -> cv2.Mat:
     img_mat = cv2.imdecode(np.fromfile(file_path, dtype=np.uint8), -1)
     return img_mat
 
@@ -18,11 +24,13 @@ def resize_image(image_folder_path):
     for i in os.listdir(image_folder_path):
         image_path = os.path.join(image_folder_path, i)
         img = cv_imread(image_path)
-        resized_img = cv2.resize(img, (375, 500))
+        height, width, _ = img.shape
+        scale_factor = 375 / width
+        resized_img = cv2.resize(img, (int(width * scale_factor), int(height * scale_factor)))
         if cv2.imwrite(f"{image_path}", resized_img) is False:
             logger.info(f"Use numpy read image [{i}]")
             cv_imwrite(image_path, resized_img)
-        logger.info(f"Resized {i} to 375*500")
+        logger.info(f"Resized {i} to 375 width while maintaining aspect ratio")
 
 def is_notify_time(datetime_str:str):
     date_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S %Z').replace(tzinfo=timezone.utc)
@@ -33,26 +41,19 @@ def delete_files(path):
     """
     删除指定路径下的所有文件
     """
-    dir_list = os.listdir(path)
-    if len(dir_list)==0:
+    try:
+        dir_list = os.listdir(path)
+    except FileNotFoundError:
+        if not os.path.exists(path):
+            os.makedirs(path)
         return
-    # 遍历文件夹中的所有文件和子文件夹
+    else:    
+        if len(dir_list)==0:
+            return
     for file in dir_list:
         full_path = os.path.join(path, file)
-        # 判断是否为文件，如果是则删除
-        if os.path.isfile(full_path):
-            os.remove(full_path)
-            logger.info(f"删除{full_path} ...")
-        # 如果是文件夹，则递归调用本函数
-        elif os.path.isdir(full_path):
-            delete_files(full_path)
-
-
-# For local test
-if os.environ.get('USER_NOTIFIER_1') is None:
-    logger.info('Load .env file from local.')
-    from dotenv import load_dotenv
-    load_dotenv()
+        os.remove(full_path)
+        logger.info(f"删除{full_path} ...")
 
 
 def download_img(img_name,image_url):
