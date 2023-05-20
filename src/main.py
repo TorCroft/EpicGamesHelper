@@ -27,7 +27,9 @@ def fetch_weekly_free_games():
         game_publisher = game['seller']['name']
 
         try:
-            game_url = f"https://store.epicgames.com/en-US/p/{game['catalogNs']['mappings'][0]['pageSlug']}"
+            game_url = f"https://store.epicgames.com/en-US/p/{game['productSlug']}"
+            if game['productSlug'] == '[]':
+                game_url = ""
         except IndexError:
             game_url = ""
         # Can be useful when you need to also show the thumbnail of the game.
