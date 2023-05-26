@@ -47,13 +47,15 @@ def delete_files(path):
         if not os.path.exists(path):
             os.makedirs(path)
         return
-    else:    
+    else:
         if len(dir_list)==0:
             return
     for file in dir_list:
         full_path = os.path.join(path, file)
         os.remove(full_path)
         logger.info(f"删除{full_path} ...")
+    if not os.path.exists(path):
+            os.makedirs(path)
 
 
 def download_img(img_name,image_url):
