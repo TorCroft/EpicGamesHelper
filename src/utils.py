@@ -6,31 +6,13 @@ import numpy as np
 import cv2
 import os
 import requests
+import re
 
 # For local test
 if os.environ.get('USER_NOTIFIER_1') is None:
     logger.info('Load .env file from local.')
     from dotenv import load_dotenv
     load_dotenv()
-
-def cv_imread(file_path="") -> cv2.Mat:
-    img_mat = cv2.imdecode(np.fromfile(file_path, dtype=np.uint8), -1)
-    return img_mat
-
-def cv_imwrite(file_path, frame):
-    cv2.imencode('.png', frame)[1].tofile(file_path)
-
-def resize_image(image_folder_path):
-    for i in os.listdir(image_folder_path):
-        image_path = os.path.join(image_folder_path, i)
-        img = cv_imread(image_path)
-        height, width, _ = img.shape
-        scale_factor = 375 / width
-        resized_img = cv2.resize(img, (int(width * scale_factor), int(height * scale_factor)))
-        if cv2.imwrite(f"{image_path}", resized_img) is False:
-            logger.info(f"Use numpy read image [{i}]")
-            cv_imwrite(image_path, resized_img)
-        logger.info(f"Resized {i} to 375 width while maintaining aspect ratio")
 
 def is_notify_time(datetime_str:str):
     date_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S %Z').replace(tzinfo=timezone.utc)
@@ -57,6 +39,32 @@ def delete_files(path):
     if not os.path.exists(path):
             os.makedirs(path)
 
+def sanitize_filename(filename):
+    # 定义不合法字符的正则表达式模式
+    invalid_chars = r'[<>:"/\\|?*]'
+    # 定义替换为下划线的字符的正则表达式模式
+    replace_char = r'_'
+    # 使用正则表达式替换不合法字符
+    sanitized_filename = re.sub(invalid_chars, replace_char, filename)
+    return sanitized_filename
+
+def resize_image(img):
+    height, width, _ = img.shape
+    scale_factor = 375 / width
+    resized_img = cv2.resize(img, (int(width * scale_factor), int(height * scale_factor)))
+    return resized_img
+
+def read_image_from_bytes(image_bytes):
+    image_array = np.frombuffer(image_bytes, np.uint8)
+    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+    return image if image is not None else None
+
+def write_mat_to_file(mat, img_name):
+    success, buffer = cv2.imencode('.png', mat)
+    if not success:
+        raise Exception("Failed to encode image")
+    with open(f'./page/images/{img_name}.png', 'wb') as file:
+        file.write(buffer.tobytes())
 
 def download_img(img_name,image_url):
     if image_url is None:
@@ -66,8 +74,8 @@ def download_img(img_name,image_url):
     except requests.exceptions.RequestException as e:
         logger.error(f"Download Failed because {e}")
         return False
-    with open(f'./page/images/{img_name}.png', 'wb') as f:
-        f.write(response.content)
+    img_name = sanitize_filename(img_name)
+    write_mat_to_file(resize_image(read_image_from_bytes(response.content)), img_name)
     logger.info(f'Download {img_name}.png completed ...')
     return True
 

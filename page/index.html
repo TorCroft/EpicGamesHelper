@@ -60,11 +60,11 @@
                         <strong>End Date:</strong> ${game.end_date}
                         ${link}
                     `;
-                    if (game.url) {
+                    if (game.game_thumbnail) {
                         let button;
                         button = document.createElement('button');
                         button.textContent = 'Show Image';
-                        button.onclick = () => showLocalImageInWindow(`./images/${game.name}.png`);
+                        button.onclick = () => showLocalImageInWindow(`./images/${sanitizeFilename(game.name)}.png`);
                         li.appendChild(button);
                     }
                     fragment.appendChild(li);
@@ -118,7 +118,15 @@
             });
         }
 
-
+        function sanitizeFilename(filename) {
+            // 定义不合法字符的正则表达式模式
+            var invalidChars = /[<>:"/\\|?*]/g;
+            // 定义替换为下划线的字符
+            var replaceChar = '_';
+            // 使用正则表达式替换不合法字符
+            var sanitizedFilename = filename.replace(invalidChars, replaceChar);
+            return sanitizedFilename;
+        }
     </script>
 </head>
 
