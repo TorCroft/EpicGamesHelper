@@ -52,13 +52,6 @@
                     }
                     const link = game.link ? `<br><a href="${game.link}" target="_blank" rel="noopener noreferrer">Go to Store Page</a><br>` : '';
                     const nameUrlStr = game.link ? `href="${game.link}"` : '';
-                    let button;
-                    if (game.link) {
-                        button = document.createElement('button');
-                        button.textContent = 'Show Image';
-                        button.onclick = () => showLocalImageInWindow(`./images/${game.name}.png`);
-                    }
-
                     li.innerHTML = `
                         <strong>Name:</strong> <a ${nameUrlStr} target="_blank" rel="noopener noreferrer">${game.name}</a><br>
                         <strong>Price:</strong> ${game.price}<br>
@@ -67,7 +60,11 @@
                         <strong>End Date:</strong> ${game.end_date}
                         ${link}
                     `;
-                    if (game.link) {
+                    if (game.url) {
+                        let button;
+                        button = document.createElement('button');
+                        button.textContent = 'Show Image';
+                        button.onclick = () => showLocalImageInWindow(`./images/${game.name}.png`);
                         li.appendChild(button);
                     }
                     fragment.appendChild(li);

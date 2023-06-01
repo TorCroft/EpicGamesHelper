@@ -38,7 +38,7 @@ def fetch_weekly_free_games():
 
         game_thumbnail = None
         for image in game['keyImages']:
-            if image['type'] == 'Thumbnail':
+            if image['type'] in ['Thumbnail', 'OfferImageTall']:
                 game_thumbnail = image['url']
                 break
         
