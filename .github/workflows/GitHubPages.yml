@@ -4,6 +4,8 @@ name: Deploy static content to Pages
 on:
   workflow_run:
     workflows: ["Fetch Weekly Free Games"]
+    types:
+      - completed
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
