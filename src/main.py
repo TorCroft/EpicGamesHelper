@@ -1,6 +1,6 @@
 from epicstore_api import EpicGamesStoreAPI
 from datetime import datetime
-
+import json
 
 def fetch_weekly_free_games():
     """Fetches current free games from the store."""
@@ -21,6 +21,9 @@ def fetch_weekly_free_games():
         ),
         key=lambda g: g['title']
     ))
+
+    with open('./page/raw_data.json', 'w', encoding='utf-8') as f:
+        json.dump(free_games, f, indent=4)
 
     for game in free_games:
         game_title = game['title']
@@ -105,3 +108,4 @@ def fetch_weekly_free_games():
                 }
             )
     return free_games_list, upcoming_fres_games_list, games_in_promotion_list
+

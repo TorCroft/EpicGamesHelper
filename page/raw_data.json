@@ -1,0 +1,320 @@
+[
+    {
+        "title": "Murder by Numbers",
+        "id": "72266ee0bb6f46b3b81f787f31eef633",
+        "namespace": "a0c5d9d8a9a940e8a8f63118c7323210",
+        "description": "Solve Pixel Puzzles to find clues. Use those clues to interrogate witnesses. Work your way to the truth....and uncover the mystery of Murder by Numbers!",
+        "effectiveDate": "2021-03-23T17:00:00.000Z",
+        "offerType": "BASE_GAME",
+        "expiryDate": null,
+        "viewableDate": "2021-03-23T17:00:00.000Z",
+        "status": "ACTIVE",
+        "isCodeRedemptionOnly": false,
+        "keyImages": [
+            {
+                "type": "OfferImageWide",
+                "url": "https://cdn1.epicgames.com/a0c5d9d8a9a940e8a8f63118c7323210/offer/EGS_MurderbyNumbers_Mediatonic_S1-2560x1440-c20572a6efa8b71deac98ce598f1fc6c.jpg"
+            },
+            {
+                "type": "OfferImageTall",
+                "url": "https://cdn1.epicgames.com/a0c5d9d8a9a940e8a8f63118c7323210/offer/EGS_MurderbyNumbers_Mediatonic_S2-1200x1600-d51cf08c93c51c9d4e9b3d140ddca9ec.jpg"
+            },
+            {
+                "type": "Thumbnail",
+                "url": "https://cdn1.epicgames.com/a0c5d9d8a9a940e8a8f63118c7323210/offer/EGS_MurderbyNumbers_Mediatonic_S2-1200x1600-d51cf08c93c51c9d4e9b3d140ddca9ec.jpg"
+            },
+            {
+                "type": "CodeRedemption_340x440",
+                "url": "https://cdn1.epicgames.com/a0c5d9d8a9a940e8a8f63118c7323210/offer/EGS_MurderbyNumbers_Mediatonic_S2-1200x1600-d51cf08c93c51c9d4e9b3d140ddca9ec.jpg"
+            },
+            {
+                "type": "DieselStoreFrontWide",
+                "url": "https://cdn1.epicgames.com/a0c5d9d8a9a940e8a8f63118c7323210/offer/EGS_MurderbyNumbers_Mediatonic_S1-2560x1440-c20572a6efa8b71deac98ce598f1fc6c.jpg"
+            },
+            {
+                "type": "DieselStoreFrontTall",
+                "url": "https://cdn1.epicgames.com/a0c5d9d8a9a940e8a8f63118c7323210/offer/EGS_MurderbyNumbers_Mediatonic_S2-1200x1600-d51cf08c93c51c9d4e9b3d140ddca9ec.jpg"
+            }
+        ],
+        "seller": {
+            "id": "o-h3rhw2ntexmcgx44cv2pdje5bz3nqh",
+            "name": "The Irregular Corporation"
+        },
+        "productSlug": "murder-by-numbers",
+        "urlSlug": "murder-by-numbers",
+        "url": null,
+        "items": [
+            {
+                "id": "7e5beda69a06485f958383b63b83ff10",
+                "namespace": "a0c5d9d8a9a940e8a8f63118c7323210"
+            }
+        ],
+        "customAttributes": [
+            {
+                "key": "com.epicgames.app.blacklist",
+                "value": "[]"
+            },
+            {
+                "key": "publisherName",
+                "value": "The Irregular Corporation"
+            },
+            {
+                "key": "developerName",
+                "value": "Mediatonic"
+            },
+            {
+                "key": "com.epicgames.app.productSlug",
+                "value": "murder-by-numbers"
+            }
+        ],
+        "categories": [
+            {
+                "path": "freegames"
+            },
+            {
+                "path": "games"
+            },
+            {
+                "path": "games/edition"
+            },
+            {
+                "path": "games/edition/base"
+            },
+            {
+                "path": "applications"
+            }
+        ],
+        "tags": [
+            {
+                "id": "1298"
+            },
+            {
+                "id": "21894"
+            },
+            {
+                "id": "9547"
+            },
+            {
+                "id": "1117"
+            },
+            {
+                "id": "1263"
+            }
+        ],
+        "catalogNs": {
+            "mappings": [
+                {
+                    "pageSlug": "murder-by-numbers",
+                    "pageType": "productHome"
+                }
+            ]
+        },
+        "offerMappings": [],
+        "price": {
+            "totalPrice": {
+                "discountPrice": 5200,
+                "originalPrice": 5200,
+                "voucherDiscount": 0,
+                "discount": 0,
+                "currencyCode": "CNY",
+                "currencyInfo": {
+                    "decimals": 2
+                },
+                "fmtPrice": {
+                    "originalPrice": "CN\u00a552.00",
+                    "discountPrice": "CN\u00a552.00",
+                    "intermediatePrice": "CN\u00a552.00"
+                }
+            },
+            "lineOffers": [
+                {
+                    "appliedRules": []
+                }
+            ]
+        },
+        "promotions": {
+            "promotionalOffers": [],
+            "upcomingPromotionalOffers": [
+                {
+                    "promotionalOffers": [
+                        {
+                            "startDate": "2023-07-20T15:00:00.000Z",
+                            "endDate": "2023-07-27T15:00:00.000Z",
+                            "discountSetting": {
+                                "discountType": "PERCENTAGE",
+                                "discountPercentage": 0
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "title": "Train Valley 2",
+        "id": "e499fc9429044cda83c141213a831592",
+        "namespace": "5c59642227a2412fb38f324d1772914e",
+        "description": "Build even more complex railway networks than ever before! Building on the success of the original, you\u2019ll get more of what you loved about the original and then some. With increasingly difficult and complex challenges from local industries, the Valley has never felt so vast!",
+        "effectiveDate": "2022-06-08T14:00:00.000Z",
+        "offerType": "BASE_GAME",
+        "expiryDate": null,
+        "viewableDate": "2022-05-13T14:00:00.000Z",
+        "status": "ACTIVE",
+        "isCodeRedemptionOnly": false,
+        "keyImages": [
+            {
+                "type": "OfferImageWide",
+                "url": "https://cdn1.epicgames.com/spt-assets/6d6a89f661f74d70bdc8be636c577056/train-valley-2-offer-bq0s1.jpg"
+            },
+            {
+                "type": "OfferImageTall",
+                "url": "https://cdn1.epicgames.com/spt-assets/6d6a89f661f74d70bdc8be636c577056/download-train-valley-2-offer-1n4tc.jpg"
+            },
+            {
+                "type": "Thumbnail",
+                "url": "https://cdn1.epicgames.com/spt-assets/6d6a89f661f74d70bdc8be636c577056/download-train-valley-2-offer-1n4tc.jpg"
+            }
+        ],
+        "seller": {
+            "id": "o-ptrc3tlq66gg7gsku56pwafjwzs23b",
+            "name": "Postmeta Games"
+        },
+        "productSlug": null,
+        "urlSlug": "869296313df04e30b5d993dd1a03876f",
+        "url": null,
+        "items": [
+            {
+                "id": "a2e339a16d2e48bfb42fd72eeb269423",
+                "namespace": "5c59642227a2412fb38f324d1772914e"
+            }
+        ],
+        "customAttributes": [
+            {
+                "key": "autoGeneratedPrice",
+                "value": "false"
+            },
+            {
+                "key": "isManuallySetPCReleaseDate",
+                "value": "true"
+            },
+            {
+                "key": "isBlockchainUsed",
+                "value": "false"
+            }
+        ],
+        "categories": [
+            {
+                "path": "freegames"
+            },
+            {
+                "path": "games"
+            },
+            {
+                "path": "games/edition"
+            },
+            {
+                "path": "games/edition/base"
+            }
+        ],
+        "tags": [
+            {
+                "id": "1393"
+            },
+            {
+                "id": "1298"
+            },
+            {
+                "id": "1299"
+            },
+            {
+                "id": "19847"
+            },
+            {
+                "id": "1370"
+            },
+            {
+                "id": "1115"
+            },
+            {
+                "id": "9547"
+            },
+            {
+                "id": "21150"
+            }
+        ],
+        "catalogNs": {
+            "mappings": [
+                {
+                    "pageSlug": "train-valley-2-3606da",
+                    "pageType": "productHome"
+                }
+            ]
+        },
+        "offerMappings": [
+            {
+                "pageSlug": "train-valley-2-3606da",
+                "pageType": "productHome"
+            }
+        ],
+        "price": {
+            "totalPrice": {
+                "discountPrice": 0,
+                "originalPrice": 4700,
+                "voucherDiscount": 0,
+                "discount": 4700,
+                "currencyCode": "CNY",
+                "currencyInfo": {
+                    "decimals": 2
+                },
+                "fmtPrice": {
+                    "originalPrice": "CN\u00a547.00",
+                    "discountPrice": "0",
+                    "intermediatePrice": "0"
+                }
+            },
+            "lineOffers": [
+                {
+                    "appliedRules": [
+                        {
+                            "id": "9f21683a0c0f4047ae862c5e587586a0",
+                            "endDate": "2023-07-20T15:00:00.000Z",
+                            "discountSetting": {
+                                "discountType": "PERCENTAGE"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "promotions": {
+            "promotionalOffers": [
+                {
+                    "promotionalOffers": [
+                        {
+                            "startDate": "2023-07-13T15:00:00.000Z",
+                            "endDate": "2023-07-20T15:00:00.000Z",
+                            "discountSetting": {
+                                "discountType": "PERCENTAGE",
+                                "discountPercentage": 0
+                            }
+                        }
+                    ]
+                }
+            ],
+            "upcomingPromotionalOffers": [
+                {
+                    "promotionalOffers": [
+                        {
+                            "startDate": "2023-07-20T15:00:00.000Z",
+                            "endDate": "2023-08-03T15:00:00.000Z",
+                            "discountSetting": {
+                                "discountType": "PERCENTAGE",
+                                "discountPercentage": 35
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]

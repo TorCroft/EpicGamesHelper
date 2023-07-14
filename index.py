@@ -11,7 +11,7 @@ def run():
         "promotions_games": promotions_games
     }
     
-    with open("./page/game_info.json", "w") as f:
+    with open("./page/game_info.json", "w", encoding='utf-8') as f:
         json.dump(game_data, f)
     
     image_folder = "./page/images"
