@@ -1,78 +1,136 @@
 from epicstore_api import EpicGamesStoreAPI
-from datetime import datetime
+from datetime import datetime, timedelta
+import json
 
-def fetch_weekly_free_games() -> list[str]:
+IMAGE_ORDER_LIST = [
+    "OfferImageTall",
+    "Thumbnail",
+    "OfferImageWide",
+    "DieselStoreFrontWide"
+]
+
+
+def has_discount_zero(item):
+    if item.get("promotions") is not None:
+        for offer in item["promotions"].get("promotionalOffers", []) + item["promotions"].get("upcomingPromotionalOffers", []):
+            if any(offer["discountSetting"]["discountPercentage"] == 0 for offer in offer.get("promotionalOffers", [])):
+                return True
+    return False
+
+
+def fetch_weekly_free_games():
     """Fetches current free games from the store."""
 
     free_games_list = []
-    upcoming_fres_games_list = []
-    games_in_promotion_list = []
-    always_free_games_list = []
-    
+    upcoming_free_games_list = []
+
     api = EpicGamesStoreAPI(country="CN")
-    free_games = api.get_free_games()['data']['Catalog']['searchStore']['elements']
+    free_games = api.get_free_games()["data"]["Catalog"]["searchStore"]["elements"]
 
     # Few odd items do not seems game and don't have the promotion attribute, so let's check it !
-    free_games = list(sorted(
-        filter(
-            lambda g: g.get('promotions'),
-            free_games
-        ),
-        key=lambda g: g['title']
-    ))
+    free_games = list(sorted(filter(has_discount_zero, free_games), key=lambda g: g["title"]))
+
+    with open("./page/json/raw_data.json", "w", encoding="utf-8") as f:
+        json.dump(free_games, f, indent=4)
 
     for game in free_games:
-        game_title = game['title']
-        game_publisher = game['seller']['name']
-        game_url = f"https://store.epicgames.com/en-US/p/{game['catalogNs']['mappings'][0]['pageSlug']}"
+        game_title = game["title"]
 
-        # Can be useful when you need to also show the thumbnail of the game.
-        # Like in Discord's embeds for example, or anything else.
-        # Here I showed it just as example and won't use it.
+        try:
+            game_url = f"https://store.epicgames.com/en-US/p/{game['productSlug']}"
+            if game["productSlug"] == "[]" or game["productSlug"] is None:
+                game_url = "https://store.epicgames.com/en-US/free-games"
+        except IndexError:
+            game_url = "https://store.epicgames.com/en-US/free-games"
 
-        '''
-        game_thumbnail = None
-        for image in game['keyImages']:
-            if image['type'] == 'Thumbnail':
-                game_thumbnail = image['url']
-        '''
-        
-        game_price = game['price']['totalPrice']['fmtPrice']['originalPrice']
-        game_price_promo = game['price']['totalPrice']['fmtPrice']['discountPrice']
+        game_thumbnail_dict = {}
+        for image in game["keyImages"]:
+            game_thumbnail_dict.update({image["type"]: image["url"]})
 
-        game_promotions = game['promotions']['promotionalOffers']
-        upcoming_promotions = game['promotions']['upcomingPromotionalOffers']
-
-        if game_promotions and game['price']['totalPrice']['discountPrice'] == 0:
-            # Promotion is active.
-            promotion_data = game_promotions[0]['promotionalOffers'][0]
-            start_date_iso, end_date_iso = promotion_data['startDate'][:-1], promotion_data['endDate'][:-1]
-            
-            # Remove the last "Z" character so Python's datetime can parse it.
-            start_date = datetime.fromisoformat(start_date_iso)
-            end_date = datetime.fromisoformat(end_date_iso)
-            msg = f'* {game_title} ({game_price}) is FREE now, until {end_date} UTC --> {game_url}'
-            free_games_list.append(msg)
-        elif not game_promotions and upcoming_promotions:
-            # Promotion is not active yet, but will be active soon.
-            promotion_data = upcoming_promotions[0]['promotionalOffers'][0]
-            start_date_iso, end_date_iso = promotion_data['startDate'][:-1], promotion_data['endDate'][:-1]
-            
-            # Remove the last "Z" character so Python's datetime can parse it.
-            start_date = datetime.fromisoformat(start_date_iso)
-            end_date = datetime.fromisoformat(end_date_iso)
-            msg = f'* {game_title} ({game_price}) will be free from {start_date} to {end_date} UTC --> {game_url}'
-            upcoming_fres_games_list.append(msg)
-        elif game_promotions:
-            # Promotion is active.
-            promotion_data = game_promotions[0]['promotionalOffers'][0]
-            start_date_iso, end_date_iso = promotion_data['startDate'][:-1], promotion_data['endDate'][:-1]
-            
-            # Remove the last "Z" character so Python's datetime can parse it.
-            start_date = datetime.fromisoformat(start_date_iso)
-            end_date = datetime.fromisoformat(end_date_iso)
-            games_in_promotion_list.append(f'* {game_title} is in promotion ({game_price} -> {game_price_promo}) from {start_date} to {end_date} UTC --> {game_url}')
+        if game_thumbnail_dict:
+            for image in IMAGE_ORDER_LIST:
+                if image in game_thumbnail_dict:
+                    game_thumbnail = game_thumbnail_dict[image]
+                    break
         else:
-            always_free_games_list.append(f'* {game_title} is always free --> {game_url}')
+            game_thumbnail = None
+
+        game_price = game["price"]["totalPrice"]["fmtPrice"]["originalPrice"]
+
+        game_promotions = game["promotions"]["promotionalOffers"]
+        upcoming_promotions = game["promotions"]["upcomingPromotionalOffers"]
+
+        if game_promotions and game["price"]["totalPrice"]["discountPrice"] == 0:
+            # Promotion is active.
+            promotion_data = game_promotions[0]["promotionalOffers"][0]
+
+            start_date = datetime.fromisoformat(promotion_data["startDate"][:-1])
+            try:
+                end_date = datetime.fromisoformat(promotion_data["endDate"][:-1])
+            except TypeError:
+                end_date = start_date + timedelta(days=7)
+            free_games_list.append(
+                {
+                    "name": game_title,
+                    "price": game_price,
+                    "status": "FREE",
+                    "start_date": f"{start_date} UTC",
+                    "end_date": f"{end_date} UTC",
+                    "game_thumbnail": game_thumbnail,
+                    "link": game_url,
+                }
+            )
+        else:
+            # Promotion is not active yet, but will be active soon.
+            for promotion in upcoming_promotions[0]["promotionalOffers"]:
+                if promotion["discountSetting"]["discountPercentage"] == 0:
+                    promotion_data = promotion
+                    break
+
+            start_date = datetime.fromisoformat(promotion_data["startDate"][:-1])
+            end_date = datetime.fromisoformat(promotion_data["endDate"][:-1])
+            upcoming_free_games_list.append(
+                {
+                    "name": game_title,
+                    "price": game_price,
+                    "status": "Coming Soon",
+                    "start_date": f"{start_date} UTC",
+                    "end_date": f"{end_date} UTC",
+                    "game_thumbnail": game_thumbnail,
+                    "link": game_url,
+                }
+            )
+
+    return free_games_list, upcoming_free_games_list
+
+
+def fetch_pinned_games():
+    pinned_games = []
+    api = EpicGamesStoreAPI(country="CN")
+    pinned_game = api.fetch_store_games(count=1, keywords="Black Myth: Wukong")["data"]["Catalog"]["searchStore"]["elements"][0]
     
-    return free_games_list + upcoming_fres_games_list + games_in_promotion_list + always_free_games_list
+    game_thumbnail_dict = {}
+    for image in pinned_game["keyImages"]:
+        game_thumbnail_dict.update({image["type"]: image["url"]})
+
+    if game_thumbnail_dict:
+            for image in IMAGE_ORDER_LIST:
+                if image in game_thumbnail_dict:
+                    game_thumbnail = game_thumbnail_dict[image]
+                    break
+    else:
+        game_thumbnail = None
+
+    pinned_games.append(
+        {
+            "name": pinned_game["title"],
+            "effectiveDate": f'{datetime.fromisoformat(pinned_game["effectiveDate"][:-1])}',
+            "original_price": pinned_game["price"]["totalPrice"]["fmtPrice"]["originalPrice"],
+            "discont_price": pinned_game["price"]["totalPrice"]["fmtPrice"]["discountPrice"],
+            "currency": pinned_game["price"]["totalPrice"]["currencyCode"],
+            "game_thumbnail": game_thumbnail,
+            "link": "https://store.epicgames.com/en-US/p/black-myth-wukong-87a72b",
+        }
+    )
+
+    return pinned_games

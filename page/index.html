@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Epic Weekly Free Games</title>
+  <meta name="description" content="Display weekly free games from Epic Games Store.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="./icons/cxk_icon.ico" type="image/x-icon">
+  <link href="css/browser.css" rel="stylesheet">
+  <link href="css/chrome-tabs.css" rel="stylesheet">
+  <link href="css/games.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="surface">
+    <div class="mock-browser">
+      <div class="chrome-tabs" style="--tab-content-margin: 9px">
+        <div class="chrome-tabs-content" style="left: var(--tab-start-pos); width: var(--tab-total-width);">
+          <div class="chrome-tab" value="0" active>
+            <div class="chrome-tab-dividers"></div>
+            <div class="chrome-tab-background">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <symbol id="chrome-tab-geometry-left" viewBox="0 0 214 36">
+                    <path d="M17 0h197v36H0v-2c4.5 0 9-3.5 9-8V8c0-4.5 3.5-8 8-8z" />
+                  </symbol>
+                  <symbol id="chrome-tab-geometry-right" viewBox="0 0 214 36">
+                    <use xlink:href="#chrome-tab-geometry-left" />
+                  </symbol>
+                  <clipPath id="crop">
+                    <rect class="mask" width="100%" height="100%" x="0" />
+                  </clipPath>
+                </defs><svg width="52%" height="100%">
+                  <use xlink:href="#chrome-tab-geometry-left" width="214" height="36" class="chrome-tab-geometry" />
+                </svg>
+                <g transform="scale(-1, 1)"><svg width="52%" height="100%" x="-100%" y="0">
+                    <use xlink:href="#chrome-tab-geometry-right" width="214" height="36" class="chrome-tab-geometry" />
+                  </svg></g>
+              </svg>
+            </div>
+            <div class="chrome-tab-content">
+              <div class="chrome-tab-favicon" style="background-image: url('icons/free.png')"></div>
+              <div class="chrome-tab-title">Free</div>
+              <div class="chrome-tab-drag-handle"></div>
+            </div>
+          </div>
+          <div class="chrome-tab" value="1">
+            <div class="chrome-tab-dividers"></div>
+            <div class="chrome-tab-background">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <symbol id="chrome-tab-geometry-left" viewBox="0 0 214 36">
+                    <path d="M17 0h197v36H0v-2c4.5 0 9-3.5 9-8V8c0-4.5 3.5-8 8-8z" />
+                  </symbol>
+                  <symbol id="chrome-tab-geometry-right" viewBox="0 0 214 36">
+                    <use xlink:href="#chrome-tab-geometry-left" />
+                  </symbol>
+                  <clipPath id="crop">
+                    <rect class="mask" width="100%" height="100%" x="0" />
+                  </clipPath>
+                </defs><svg width="52%" height="100%">
+                  <use xlink:href="#chrome-tab-geometry-left" width="214" height="36" class="chrome-tab-geometry" />
+                </svg>
+                <g transform="scale(-1, 1)"><svg width="52%" height="100%" x="-100%" y="0">
+                    <use xlink:href="#chrome-tab-geometry-right" width="214" height="36" class="chrome-tab-geometry" />
+                  </svg></g>
+              </svg>
+            </div>
+            <div class="chrome-tab-content">
+              <div class="chrome-tab-favicon" style="background-image: url('icons/upcoming.png')"></div>
+              <div class="chrome-tab-title">Upcoming</div>
+              <div class="chrome-tab-drag-handle"></div>
+            </div>
+          </div>
+          <div class="chrome-tab" value="2">
+            <div class="chrome-tab-dividers"></div>
+            <div class="chrome-tab-background">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <symbol id="chrome-tab-geometry-left" viewBox="0 0 214 36">
+                    <path d="M17 0h197v36H0v-2c4.5 0 9-3.5 9-8V8c0-4.5 3.5-8 8-8z" />
+                  </symbol>
+                  <symbol id="chrome-tab-geometry-right" viewBox="0 0 214 36">
+                    <use xlink:href="#chrome-tab-geometry-left" />
+                  </symbol>
+                  <clipPath id="crop">
+                    <rect class="mask" width="100%" height="100%" x="0" />
+                  </clipPath>
+                </defs><svg width="52%" height="100%">
+                  <use xlink:href="#chrome-tab-geometry-left" width="214" height="36" class="chrome-tab-geometry" />
+                </svg>
+                <g transform="scale(-1, 1)"><svg width="52%" height="100%" x="-100%" y="0">
+                    <use xlink:href="#chrome-tab-geometry-right" width="214" height="36" class="chrome-tab-geometry" />
+                  </svg></g>
+              </svg>
+            </div>
+            <div class="chrome-tab-content">
+              <div class="chrome-tab-favicon" style="background-image: url('icons/pin.png')"></div>
+              <div class="chrome-tab-title">Pinned</div>
+              <div class="chrome-tab-drag-handle"></div>
+            </div>
+          </div>
+        </div>
+        <div class="chrome-tabs-bottom-bar"></div>
+        <!-- Styles to prevent flash after JS initialization -->
+        <style>
+          .chrome-tabs .chrome-tab {
+            width: 258px
+          }
+
+          .chrome-tabs .chrome-tab:nth-child(1) {
+            transform: translate3d(0px, 0, 0)
+          }
+
+          .chrome-tabs .chrome-tab:nth-child(2) {
+            transform: translate3d(239px, 0, 0)
+          }
+        </style>
+      </div>
+      <div class="chrome-tabs-optional-shadow-below-bottom-bar"></div>
+      <div class="game-tab-container">
+        <div class="game-list-tab" id="free-games-tab">
+          <ul class="game-info-list" id="free-games-list"></ul>
+        </div>
+        <div class="game-list-tab" id="upcoming-free-games-tab" style="display: none;">
+          <ul class="game-info-list" id="upcoming-free-games-list"></ul>
+        </div>
+        <div class="game-list-tab" id="pinned-games-tab" style="display: none;">
+          <ul class="game-info-list" id="pinned-games-list"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./scripts/draggabilly.js"></script>
+  <script src="./scripts/chrome-tabs.js"></script>
+  <script src="./scripts/moment.js"></script>
+  <script>
+    let el = document.querySelector('.chrome-tabs');
+    let chromeTabs = new ChromeTabs();
+    const now_utc8 = moment(moment.utc()).utcOffset(8);
+    const free_games_tab = document.getElementById('free-games-tab');
+    const upcoming_free_games_tab = document.getElementById('upcoming-free-games-tab');
+    const pinned_games_tab = document.getElementById('pinned-games-tab');
+    chromeTabs.init(el);
+    el.addEventListener('activeTabChange', (event) => {
+      const tabEl = event.detail.tabEl;
+      switch (tabEl.getAttribute('value')) {
+        case '0':
+          free_games_tab.style.display = 'block';
+          upcoming_free_games_tab.style.display = 'none';
+          pinned_games_tab.style.display = 'none';
+          break;
+        case '1':
+          free_games_tab.style.display = 'none';
+          upcoming_free_games_tab.style.display = 'block';
+          pinned_games_tab.style.display = 'none';
+          break;
+        case '2':
+          free_games_tab.style.display = 'none';
+          upcoming_free_games_tab.style.display = 'none';
+          pinned_games_tab.style.display = 'block';
+          break;
+        default:
+          break;
+      }
+    });
+  </script>
+  <script>
+    const freeGamesList = document.getElementById('free-games-list');
+    const upcomingFreeGamesList = document.getElementById('upcoming-free-games-list');
+    const pinnedGamesList = document.getElementById('pinned-games-list');
+    function getGameInfo(url) {
+      return fetch(url, { cache: "no-store" }).then(response => {
+        if (!response.ok) {
+          throw new Error('Unable to get game data.');
+        }
+        return response.json();
+      });
+    }
+    function process_datetime(startTime, endTime) {
+      const startDateTime = moment.utc(startTime, "YYYY-MM-DD HH:mm:ss Z").utcOffset(8);
+      const endDateTime = moment.utc(endTime, "YYYY-MM-DD HH:mm:ss Z").utcOffset(8);
+      if (startDateTime <= now_utc8 && now_utc8 <= endDateTime) {
+        return `<strong>From:</strong><span>Now</span><strong>Until:</strong><span>${endDateTime.format("MMM D [at] h:mm A")}</span>`;
+      } else {
+        const start = startDateTime.format("MMM D [at] h:mm A");
+        const end = endDateTime.format("MMM D [at] h:mm A");
+        return `<strong>From:</strong><span>${start}</span><strong>Until:</strong> ${end}</span>`;
+      }
+    }
+    function createGameElement(gameData) {
+      const li = document.createElement('li');
+      let color = gameData.status === 'FREE' ? 'free-color' : 'upcoming-free-color';
+      li.innerHTML = `
+      <h2>${gameData.name}</h2>
+        <div class="game-info">
+          <div class="game-details">
+            <div class="game-details-list">
+              <strong>Price:</strong> <span>${gameData.price}</span>
+              <strong>Status:</strong> <span class="${color}">${gameData.status}</span>
+              ${process_datetime(gameData.start_date, gameData.end_date)}
+            </div>
+            <div class="link"><a href="${gameData.link}" target="_blank">Go to Store Page</a></div>
+          </div>
+          <div class="game-image"><img src="${gameData.game_thumbnail}" alt="${gameData.name}"></div>
+        </div>
+      `;
+      return li;
+    }
+
+    function parsePinnedGame(gameData) {
+      const li = document.createElement('li');
+      li.innerHTML = `
+      <h2>${gameData.name}</h2>
+        <div class="game-info">
+          <div class="game-details">
+            <div class="game-details-list">
+              <strong>Original:</strong> <span>${gameData.original_price}</span>
+              <strong>Discont:</strong> <span>${gameData.discont_price}</span>
+              <strong>Currency:</strong>${gameData.currency}</span>
+              <strong>Effective:</strong>${gameData.effectiveDate}</span>
+            </div>
+            <div class="link"><a href="${gameData.link}" target="_blank">Go to Store Page</a></div>
+          </div>
+          <div class="game-image"><img src="${gameData.game_thumbnail}" alt="${gameData.name}"></div>
+        </div>
+      `;
+      return li;
+    }
+    getGameInfo('./json/game_info.json')
+      .then(game_data => {
+        game_data.free_games.forEach((gameData) => {
+          const li = createGameElement(gameData);
+          freeGamesList.appendChild(li);
+        });
+        game_data.to_be_free.forEach((gameData) => {
+          const li = createGameElement(gameData);
+          upcomingFreeGamesList.appendChild(li);
+        });
+        game_data.pinned.forEach((gameData) => {
+          const li = parsePinnedGame(gameData);
+          pinnedGamesList.appendChild(li);
+        });
+      });
+  </script>
+</body>
+
+</html>

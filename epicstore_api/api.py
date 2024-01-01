@@ -3,7 +3,7 @@
 """
 MIT License
 
-Copyright (c) 2020-2022 SD4RK
+Copyright (c) 2020-2023 SD4RK
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ import json
 import requests
 from typing import Union, List, NamedTuple
 from .exc import EGSNotFound, EGSException
-from .models import EGSCategory, EGSProductType
+from .models import EGSCategory, EGSProductType, EGSCollectionType
 from .queries import (CATALOG_QUERY,
                       PROMOTIONS_QUERY,
                       CATALOG_TAGS_QUERY,
@@ -39,7 +39,8 @@ from .queries import (CATALOG_QUERY,
                       STORE_QUERY,
                       ADDONS_QUERY,
                       MEDIA_QUERY,
-                      PRODUCT_REVIEWS_QUERY)
+                      PRODUCT_REVIEWS_QUERY,
+                      COLLECTION_QUERY)
 
 
 class OfferData(NamedTuple):
@@ -48,6 +49,21 @@ class OfferData(NamedTuple):
 
 
 __all__ = ['EpicGamesStoreAPI', 'OfferData']
+
+
+def _clean_1004_errors(raw):
+    # On some responses EGS API returns 1004 errors for no reason, however the responses being sent are valid otherwise.
+    # Official launcher ignores those errors, so we probably should do that as well. That function cleans up the mess
+    # from raw response so error handling is still possible.
+    if 'errors' in raw:
+        for error in raw['errors'].copy():
+            service_response = json.loads(error.get('serviceResponse', {}))
+            if service_response:
+                if service_response.get('numericErrorCode') == 1004:
+                    raw['errors'].remove(error)
+        if not raw['errors']:
+            raw.pop('errors')
+    return raw
 
 
 class EpicGamesStoreAPI:
@@ -93,7 +109,7 @@ class EpicGamesStoreAPI:
             'freeGamesPromotions?locale={}&country={}&allowCountries={}'
         )
         api_uri = api_uri.format(self.locale, self.country, allow_countries)
-        data = self._session.get(api_uri).json()
+        data = _clean_1004_errors(self._session.get(api_uri).json())
         self._get_errors(data)
         return data
 
@@ -135,6 +151,22 @@ class EpicGamesStoreAPI:
             } for offer in offers]
         )
 
+    def get_collection(self, collection: EGSCollectionType) -> dict:
+        """Returns games from the collection by the given collection type
+        (see the documentation for CollectionType class).
+
+        :param collection: Needed collection type.
+        """
+        # Cleanup for the 1004 errors that always pop up by default to not mess someone up by this.
+        raw = _clean_1004_errors(self._make_graphql_query(
+            COLLECTION_QUERY,
+            slug=collection.value,
+            # This query always returns 1004 error by default. That is not controlled by us and the error itself
+            # is happening even in the official EGS client itself, they're just ignoring it, so we will too.
+            suppress_errors=True
+        ))
+        return raw
+
     def fetch_media(self, media_ref_id: str) -> dict:
         """Returns media-file (type of the file, its url and so on) by the
         file's media ref ID.
@@ -163,7 +195,7 @@ class EpicGamesStoreAPI:
         categories: str = 'addons|digitalextras',
         count: int = 250,
         sort_by: str = 'releaseDate',
-        sort_dir: str = 'DESC',
+        sort_dir: str = 'DESC'
     ):
         """Returns product's addons by product's namespace.
 
@@ -188,7 +220,7 @@ class EpicGamesStoreAPI:
             count=count,
             categories=categories,
             sortBy=sort_by,
-            sortDir=sort_dir,
+            sortDir=sort_dir
         )
 
     def get_product_reviews(self, product_sku: str) -> dict:
@@ -404,6 +436,7 @@ class EpicGamesStoreAPI:
         self,
         query_string,
         headers={},
+        suppress_errors=False,
         *multiple_query_variables,
         **variables
     ) -> dict:
@@ -413,7 +446,7 @@ class EpicGamesStoreAPI:
             response = self._session.post(
                 'https://graphql.epicgames.com/graphql',
                 json={'query': query_string, 'variables': variables},
-                headers=headers
+                headers=headers,
             ).json()
         else:
             data = []
@@ -432,7 +465,8 @@ class EpicGamesStoreAPI:
                 json=data,
                 headers=headers
             ).json()
-        self._get_errors(response)
+        if not suppress_errors:
+            self._get_errors(response)
         return response
 
     @staticmethod

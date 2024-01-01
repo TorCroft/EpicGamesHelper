@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-
-"""
 MIT License
 
-Copyright (c) 2020-2023 SD4RK
+Copyright (c) 2023 tor_croft
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,9 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-"""
-
-
-from .categories import EGSCategory
-from .product_types import EGSProductType
-from .collection_types import EGSCollectionType
