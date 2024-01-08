@@ -1,4 +1,5 @@
 from datetime import datetime, timezone, timedelta
+from os import path, makedirs
 from onepush import notify
 from loguru import logger
 from ast import literal_eval
@@ -111,6 +112,9 @@ def notify_user(title, content):
 
 def parse_game_list(game_list: list[dict]):
     msg_list = []
+    image_folder = "./page/images"
+    if not path.exists(image_folder):
+        makedirs(image_folder)
     for game in game_list:
         download_img(game["name"], game["game_thumbnail"])
         if (game["status"] == "FREE"):

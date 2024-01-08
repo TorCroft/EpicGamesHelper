@@ -25,13 +25,4 @@ jobs:
       - name: Run python script
         env:
           USER_NOTIFIER_1: ${{ secrets.USER_NOTIFIER_1 }}
-        run: |
-          python3 ./index.py
-
-      - name: Push if there are any changes
-        run: |
-          git config --global user.email "${{ secrets.EMAIL }}"
-          git config --global user.name "${{ secrets.USERNAME }}"
-          git status
-          git add .
-          git commit -m "Updated at $(date -u +'%Y-%m-%d %H:%M:%S') UTC" && git push || echo "No changes to commit"
+        run: python3 ./index.py
