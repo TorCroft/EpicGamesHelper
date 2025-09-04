@@ -1,5 +1,6 @@
 from epicstore_api import EpicGamesStoreAPI
 from datetime import datetime, timedelta
+import os
 import json
 
 IMAGE_ORDER_LIST = [
@@ -9,6 +10,7 @@ IMAGE_ORDER_LIST = [
     "DieselStoreFrontWide"
 ]
 
+RAW_DATA_JSON_PATH = "./page/json/raw_data.json"
 
 def has_discount_zero(item):
     if item.get("promotions") is not None:
@@ -30,7 +32,9 @@ def fetch_weekly_free_games():
     # Few odd items do not seems game and don't have the promotion attribute, so let's check it !
     free_games = list(sorted(filter(has_discount_zero, free_games), key=lambda g: g["title"]))
 
-    with open("./page/json/raw_data.json", "w", encoding="utf-8") as f:
+    os.makedirs(os.path.dirname(RAW_DATA_JSON_PATH), exist_ok=True)
+
+    with open(RAW_DATA_JSON_PATH, "w", encoding="utf-8") as f:
         json.dump(free_games, f, indent=4)
 
     for game in free_games:
